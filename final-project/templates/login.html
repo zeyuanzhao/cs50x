@@ -1,0 +1,82 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Log In 
+{% endblock %}
+
+{% block main %}
+    <form id="form" onsubmit="return false">
+        <div class="form-group mb-0">
+            <input type="text" name="username" autocomplete="off" autofocus class="form-control" placeholder="Username">
+        </div>
+        <div class="mb-2 mt-0 red d-block" id="unerror">&nbsp;</div>
+        <div class="form-group mb-0">
+            <input type="password" name="password" autocomplete="off" class="form-control" placeholder="Password">
+        </div>
+        <div class="mb-2 mt-0 red d-block" id="pwerror">&nbsp;</div>
+        <div class="mb-1 mt-2 red d-block" id="gerror">&nbsp;</div>
+        <div class="form-group mt-5 mb-5">
+            <input class="btn btn-primary" type="submit" value="Log In">
+        </div>
+    </form>
+    <script>
+        document.getElementById("form").onsubmit = function(e) {
+            e.preventDefault();
+            const username = document.getElementsByName("username")[0].value;
+            const password = document.getElementsByName("password")[0].value;
+            const formData = new FormData();
+            formData.append('username', username);
+            formData.append('password', password);
+            axios.post("/login", formData, {headers: {"Content-Type": "multipart/form-data"}})
+            .then(function (response) {
+                const data = response.data;
+                window.location.href = data.url;
+            })
+            .catch(function (error) {
+                const data = error.response.data;
+                document.getElementById(data.field).innerHTML = data.error;
+            })
+        }
+    </script>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <script>
+            /*
+        $("#form").submit(function(event) {
+            $.post({
+                url: "/login",
+                data: {"username": $("[name='username']").val(), "password": $("[name='password']").val()},
+                error: function(resp) {
+                    console.log("Returned Error! " + resp.status);
+                    console.log(resp)
+                    json = resp.responseJSON
+                    if (json.field === "username") {
+                        $("#unerror").html(json.error)
+                    } else if (json.field === "password") {
+                        $("#pwerror").html(json.error)
+                    } else if (json.field === "general") {
+                        $("#gerror").html(json.error)
+                    }
+                }, 
+                success: function(resp) {
+                    console.log(resp)
+                    json = resp.responseJSON
+                    if (json.action === "redirect") {
+                        window.location.href(json.url)
+                    }
+                }
+            })
+        });
+        */
+</script> -->

@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Register
+{% endblock %}
+
+{% block main %}
+    <form id="form" onsubmit="return false">
+        <div class="form-group mb-0">
+            <input type="text" name="username" autocomplete="off" autofocus class="form-control" placeholder="Username">
+        </div>
+        <div class="mb-2 mt-0 red d-block" id="unerror">&nbsp;</div>
+        <div class="form-group mb-0">
+            <input type="password" name="password" autocomplete="off" class="form-control" placeholder="Password">
+        </div>
+        <div class="mb-2 mt-0 red d-block" id="pwerror">&nbsp;</div>
+        <div class="form-group mb-0">
+            <input type="password" name="confirmation" autocomplete="off" class="form-control" placeholder="Password Confirmation">
+        </div>
+        <div class="mb-2 mt-0 red d-block" id="cerror">&nbsp;</div>
+        <div class="form-group mt-5 mb-5">
+            <input class="btn btn-primary" type="submit" value="Log In">
+        </div>
+    </form>
+    <script>
+        document.getElementById("form").onsubmit = function(e) {
+            e.preventDefault();
+            const username = document.getElementsByName("username")[0].value;
+            const password = document.getElementsByName("password")[0].value;
+            const confirmation = document.getElementsByName("confirmation")[0].value;
+            const formData = new FormData();
+            formData.append("username", username);
+            formData.append("password", password);
+            formData.append("confirmation", confirmation);
+            axios.post("/register", formData, {headers: {"Content-Type": "multipart/form-data"}})
+            .then(function (response) {
+                const data = response.data;
+                window.location.href = data.url;
+            })
+            .catch(function (error) {
+                const data = error.response.data;
+                document.getElementById(data.field).innerHTML = data.error;
+            });
+        }
+    </script>
+{% endblock %}

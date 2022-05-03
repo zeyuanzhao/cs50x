@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Lists
+{% endblock %}
+
+{% block main %}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Description</th>
+            <th scope="col">Items</th>
+            <th scope="col">Created</th>
+            <th scope="col" colspan="">Updated</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for list in lists %}
+        <tr>
+            <th scope="row">{{ list["name"] }}</th>
+            <td>{{ list["description"] }}</td>
+            <td>{{ list["items"] }}</td>
+            <td>{{ list["created"] }}</td>
+            <td>{{ list["updated"] }}</td>
+            <td><button class="btn btn-outline-primary" onclick="window.location.href = `{{ list['url'] }}`;">View</button></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<a class="btn btn-primary" href="/create">Create New Table</a>
+
+{% endblock %}

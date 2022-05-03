@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    List
+{% endblock %}
+
+{% block main %}
+
+<h1 class="mb-4">{{ name }}</h1>
+
+<p>{{ description }}</p>
+
+<ul class="list-group">
+
+    {% for entry in entries %}
+
+    <li class="list-group-item hover-on">
+        <form action="/lists/{{ name }}" method="POST">
+            <input type="hidden" name="action" value="delete">
+            <button class="btn-link" type="submit" name="id" value="{{ entry['id'] }}">{{ entry["value"] }}</button>
+        </form>
+    </li>
+
+    {% endfor %}
+
+</ul>
+
+<button class="btn btn-primary mt-5" onclick="addEntry();">New Entry</button>
+
+<form id="new-entry" class="mt-4 p-3 bg-light" action="/lists/{{ name }}" method="POST">
+    <input type="hidden" name="action" value="add">
+    <input id="entry-value" class="form-control" autofocus name="value" placeholder="Value">
+    <br>
+    <button type="submit" class="btn btn-primary mt-3">Add</button>
+</form>
+
+<script>
+    var displayForm = false;
+    var currentDisplay = "none";
+    function addEntry() {
+        displayForm = !displayForm;
+        currentDisplay = displayForm ? "block" : "none";
+        document.getElementById("new-entry").style.display = currentDisplay;
+    }
+</script>
+
+{% endblock %}
